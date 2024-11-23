@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "VBTV video controls",
+  "version": "1.0.0",
+  "description": "This extension adds keyboard video control support to VBTV",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://tv.volleyballworld.com/player*"],
+      "js": ["content.js"]
+    }
+  ],
+  "permissions": ["storage", "scripting", "activeTab"]
+}

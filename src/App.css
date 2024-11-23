@@ -17,3 +17,7 @@
   justify-items: center;
   gap: 10px;
 }
+
+.time {
+  font-family: monospace;
+}

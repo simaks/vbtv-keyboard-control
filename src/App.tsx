@@ -1,35 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [seekTime, setSeekTime] = useState(10);
+
+  const seek = (seconds: number) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (!tabs[0].id) return;
+
+      chrome.scripting.executeScript({
+        target: { tabId: tabs[0].id },
+        args: [seconds],
+        func: (funcSeconds) => {
+          const video = document.querySelector("video");
+          if (!video) return;
+          video.currentTime += funcSeconds;
+          if (video.paused) {
+            video.play();
+          }
+        },
+      });
+    });
+  };
+
+  const backward = async () => {
+    seek(-seekTime);
+  };
+
+  const forward = async () => {
+    seek(seekTime);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="popup">
+      <label htmlFor="seekTime">Seek time</label>
+      <input
+        id="seekTime"
+        type="number"
+        min="1"
+        value={seekTime}
+        onChange={(event) => {
+          setSeekTime(event.target.valueAsNumber);
+        }}
+      />
+
+      <div className="seekButtons">
+        <button onClick={backward}>{"<"}</button>
+        <button onClick={forward}>{">"}</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;

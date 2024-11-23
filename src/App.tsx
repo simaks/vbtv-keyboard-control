@@ -53,6 +53,7 @@ function App() {
   };
 
   useEffect(() => {
+    updateTime();
     const intervalId = setInterval(updateTime, 1000);
 
     return () => {

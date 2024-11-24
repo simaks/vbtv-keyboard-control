@@ -15,14 +15,22 @@ chrome.storage.sync.get({ seekTime: 10 }, (data) => {
         event.preventDefault();
         break;
       case "ArrowRight":
-        video.currentTime += seekTime;
+        if (event.shiftKey) {
+          video.currentTime += seekTime * 60;
+        } else {
+          video.currentTime += seekTime;
+        }
         if (video.paused) {
           video.play();
         }
         event.preventDefault();
         break;
       case "ArrowLeft":
-        video.currentTime -= seekTime;
+        if (event.shiftKey) {
+          video.currentTime -= seekTime * 60;
+        } else {
+          video.currentTime -= seekTime;
+        }
         if (video.paused) {
           video.play();
         }

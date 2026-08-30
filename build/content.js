@@ -36,6 +36,20 @@ chrome.storage.sync.get({ seekTime: 10 }, (data) => {
         }
         event.preventDefault();
         break;
+      case "ArrowUp":
+        video.playbackRate = Math.min(video.playbackRate * 2, 1);
+        if (video.paused) {
+          video.play();
+        }
+        event.preventDefault();
+        break;
+      case "ArrowDown":
+        video.playbackRate = video.playbackRate / 2;
+        if (video.paused) {
+          video.play();
+        }
+        event.preventDefault();
+        break;
     }
   });
 });
